@@ -48,7 +48,7 @@ cat <<EOF >"$BUILD_SCRIPT"
         git apply "\$patch"
     done
 
-    # 新增脚本(*.sh)补丁
+    # patches: 新增脚本(*.sh)补丁
     SCRIPTS=('/patches/$GIT_BRANCH'/*.sh)
     if [[ "\${#SCRIPTS[@]}" = 0 ]]; then
         echo 'No scripts found for $GIT_BRANCH'
