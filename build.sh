@@ -36,22 +36,25 @@ cat <<EOF >"$BUILD_SCRIPT"
     git clone --filter=blob:none --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
     cd ffmpeg
 
-    git config user.email "builder@localhost"
-    git config user.name "Builder"
+    #####################################
+    echo "工程目录: $GITHUB_WORKSPACE"; ls -l
+    echo "当前目录: $PWD"; ls -l
 
     # 加载 ffmpeg 补丁
-    PATCHES="patches/${GIT_BRANCH}/*.patch"
+    PATCHES="$GITHUB_WORKSPACE/patches/${GIT_BRANCH}/*.patch"
     for patch in ${PATCHES}; do
         echo "Applying $patch"
         git apply $patch
     done
-    
+
     # 加载 ffmpeg 补丁(*.sh)
-    SCRIPTS="patches/${GIT_BRANCH}/*.sh"
+    SCRIPTS="$GITHUB_WORKSPACE/patches/${GIT_BRANCH}/*.sh"
     for scripts in ${SCRIPTS}; do
-        echo "Patch Scripts : $scripts"
+        echo "Scripts Patch : $scripts"
+        chmod +x $scripts
         source $scripts
     done
+    #####################################
 
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
         --extra-cflags="\$FF_CFLAGS" --extra-cxxflags="\$FF_CXXFLAGS" --extra-libs="\$FF_LIBS" \
