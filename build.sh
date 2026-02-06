@@ -48,13 +48,13 @@ cat <<EOF >"$BUILD_SCRIPT"
         git apply "\$patch"
     done
 
-    SCRTIPES=('/patches/$GIT_BRANCH'/*.sh)
-    if [[ "\${#SCRTIPES[@]}" = 0 ]]; then
+    SCRIPTES=('/patches/$GIT_BRANCH'/*.sh)
+    if [[ "\${#SCRIPTES[@]}" = 0 ]]; then
         echo 'No scrtip patches found for $GIT_BRANCH'
     fi
-    for scrtip in "\${SCRTIPES[@]}"; do
-        echo "scrtip patches \$scrtip"
-        source "\$scrtip"
+    for script in "\${SCRIPTES[@]}"; do
+        echo "script patches \$script"
+        source "\$script"
     done
 
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
